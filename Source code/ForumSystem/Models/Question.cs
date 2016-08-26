@@ -8,6 +8,11 @@ namespace ForumSystem.Models
 {
     public class Question
     {
+        public Question ()
+        {
+            this.Date = DateTime.Now;
+        }
+
         [Key]
         public int QuestionId { get; set; }
 
@@ -18,7 +23,7 @@ namespace ForumSystem.Models
         [StringLength(1000)]
         public string QuestionBody { get; set; }
 
-        public DateTime Date { get { return DateTime.Now.Date; } }
+        public DateTime Date { get; set; }
         
         public ApplicationUser Author { get; set;}
 
