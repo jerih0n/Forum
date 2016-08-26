@@ -10,7 +10,7 @@ namespace ForumSystem.Models
     public class ApplicationUser : IdentityUser
     {
         public string FullName { get; set;}
-        public string Nickname { get; set; }
+        public string Username { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType

@@ -7,7 +7,6 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using ForumSystem.Models;
-
 namespace ForumSystem.Controllers
 {
     public class QuestionsController : Controller
@@ -17,7 +16,7 @@ namespace ForumSystem.Controllers
         // GET: Questions
         public ActionResult Index()
         {
-            return View(db.Questions.ToList());
+            return View(db.Questions.Include(p=>p.Author).ToList());
         }
 
         // GET: Questions/Details/5
@@ -48,10 +47,12 @@ namespace ForumSystem.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QuestionId,QuestionTitle,QuestionBody")] Question question)
+        public ActionResult Create([Bind(Include = "QuestionId,QuestionTitle,QuestionBody,Author")] Question question)
         {
             if (ModelState.IsValid)
             {
+
+                question.Author = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 db.Questions.Add(question);
                 db.SaveChanges();
                 return RedirectToAction("Index");

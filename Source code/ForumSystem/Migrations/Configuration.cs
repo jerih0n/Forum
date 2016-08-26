@@ -9,7 +9,7 @@ namespace ForumSystem.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            this.AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ForumSystem.Models.ApplicationDbContext context)

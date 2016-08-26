@@ -12,15 +12,18 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.QuestionTitle)
+            @Html.DisplayNameFor(model=>model.QuestionTitle)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.QuestionBody)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Date.Date)
+            @Html.DisplayNameFor(model=>model.Author)
         </th>
-        
+        <th>
+            @Html.DisplayNameFor(model=>model.Date)
+        </th>
+
     </tr>
 
 @foreach (var item in Model) {
@@ -30,6 +33,18 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.QuestionBody)
+        </td>
+        <td>
+            @if(item.Author != null)
+            {
+                @item.Author.Username
+            }else
+            {
+                @:No user info
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem =>item.Date.Date)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.QuestionId }) |
