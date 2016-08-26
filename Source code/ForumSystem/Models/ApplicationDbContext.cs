@@ -18,5 +18,7 @@ namespace ForumSystem.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<ForumSystem.Models.Question> Questions { get; set; }
     }
 }
