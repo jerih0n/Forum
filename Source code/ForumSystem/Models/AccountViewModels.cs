@@ -49,8 +49,8 @@ namespace ForumSystem.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Username")]
-        public string Username { get; set; }
+        [Display(Name ="Username")]
+        public string Nickname { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,13 +64,9 @@ namespace ForumSystem.Models
     public class RegisterViewModel
     {
         [Required]
-        [StringLength(50)]
+        [StringLength(100)]
         [Display(Name ="Username")]
-        public string Username { get; set; }
-
-        [StringLength(150)]
-        [Display(Name ="Full Name")]
-        public string FullName { get; set; }
+        public string Nickname { get; set; }
 
         [Required]
         [EmailAddress]
@@ -87,6 +83,17 @@ namespace ForumSystem.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name ="Secret Question")]
+        [StringLength(200)]
+        public string SecretQuestion { get; set; }
+
+        [Required]
+        [Display(Name ="Secret Answer")]
+        [StringLength(200)]
+        public string SecretAnswer { get; set; }
+
     }
 
     public class ResetPasswordViewModel

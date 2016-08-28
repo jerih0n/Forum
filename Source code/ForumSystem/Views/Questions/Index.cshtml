@@ -1,10 +1,11 @@
 ﻿@model IEnumerable<ForumSystem.Models.Question>
+    @using ForumSystem.Classes
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "All Questions";
 }
 
-<h2>Index</h2>
+<h2>List of all asked questions</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -12,44 +13,36 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model=>model.QuestionTitle)
+            @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.QuestionBody)
+            @Html.DisplayNameFor(model => model.Body)         
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.Author)
+            @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model=>model.Date)
+            @Html.DisplayNameFor(model => model.Author.UserName)
         </th>
-
+        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.QuestionTitle)
+            @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.QuestionBody)
+            @Utiles.SplitBody(Html.DisplayFor(modelItem => item.Body).ToString())
         </td>
         <td>
-            @if(item.Author != null)
-            {
-                @item.Author.Username
-            }else
-            {
-                @:No user info
-            }
+            @Html.DisplayFor(modelItem => item.Date)
         </td>
         <td>
-            @Html.DisplayFor(modelItem =>item.Date.Date)
+            @Html.DisplayFor(modelItem => item.Author.UserName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.QuestionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.QuestionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.QuestionId })
+            @Html.ActionLink("See more", "Details", new { id=item.QuestionId }) 
         </td>
     </tr>
 }

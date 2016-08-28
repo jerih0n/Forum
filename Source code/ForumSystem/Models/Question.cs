@@ -8,25 +8,33 @@ namespace ForumSystem.Models
 {
     public class Question
     {
-        public Question ()
+        public Question()
         {
             this.Date = DateTime.Now;
+           
         }
-
         [Key]
         public int QuestionId { get; set; }
 
         [Required]
         [StringLength(100)]
-        [Display(Name ="Title")]
-        public string QuestionTitle { get; set;}
+        [Display(Name = "Topic")]
+        public string Title { get; set; }
+
         [Required]
-        [StringLength(1000)]
-        [Display(Name ="Question")]
-        public string QuestionBody { get; set; }
+        [StringLength(3000)]
+        [Display(Name = "Your Question")]
+        public string Body { get; set; }
+
+        [Required]
+        [Display(Name = "Asked on")]
         public DateTime Date { get; set; }
-        [Display(Name ="Asked By")]
-        public ApplicationUser Author { get; set;}
+
+        [Display(Name = "Qustion Author")]
+        public ApplicationUser Author { get; set; }
+
+
+
 
     }
 }

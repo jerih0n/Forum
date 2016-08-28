@@ -12,7 +12,6 @@ namespace ForumSystem.Controllers
         {
             return View();
         }
-
         
     }
 }

@@ -6,8 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using ForumSystem.Models;
-namespace ForumSystem.Controllers
+
+namespace ForumSystem.Models
 {
     public class QuestionsController : Controller
     {
@@ -16,7 +16,8 @@ namespace ForumSystem.Controllers
         // GET: Questions
         public ActionResult Index()
         {
-            return View(db.Questions.Include(p=>p.Author).ToList());
+            var qustions = db.Questions.Include(u => u.Author);
+            return View(qustions);
         }
 
         // GET: Questions/Details/5
@@ -26,7 +27,8 @@ namespace ForumSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
+            Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u =>u.QuestionId == id);
+            
             if (question == null)
             {
                 return HttpNotFound();
@@ -34,7 +36,7 @@ namespace ForumSystem.Controllers
             return View(question);
         }
 
-        // GET: Questions/Create
+        // GET: Questions/Creat
         [Authorize]
         public ActionResult Create()
         {
@@ -47,12 +49,11 @@ namespace ForumSystem.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QuestionId,QuestionTitle,QuestionBody,Author")] Question question)
+        public ActionResult Create([Bind(Include = "QuestionId,Title,Body,Date,Author")] Question question)
         {
             if (ModelState.IsValid)
             {
-
-                question.Author = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
                 db.Questions.Add(question);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -83,10 +84,11 @@ namespace ForumSystem.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QuestionId,QuestionTitle,QuestionBody")] Question question)
+        public ActionResult Edit([Bind(Include = "QuestionId,Title,Body,Date")] Question question)
         {
             if (ModelState.IsValid)
             {
+                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
                 db.Entry(question).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -98,6 +100,7 @@ namespace ForumSystem.Controllers
         [Authorize]
         public ActionResult Delete(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

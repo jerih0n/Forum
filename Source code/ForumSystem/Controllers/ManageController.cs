@@ -66,6 +66,7 @@ namespace ForumSystem.Controllers
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
+                
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),

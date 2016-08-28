@@ -151,7 +151,7 @@ namespace ForumSystem.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Username, Email = model.Email, FullName = model.FullName, Username = model.Username};
+                var user = new ApplicationUser { UserName = model.Nickname, Email = model.Email, SecretQuestiong = model.SecretQuestion, SecretAnswer = model.SecretAnswer};
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
