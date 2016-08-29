@@ -58,7 +58,6 @@ namespace ForumSystem.Models
                 //Possible Error
                 return RedirectToAction("Details", "Questions",new { id =Utiles.QustionId });
             }
-
             return View(comment);
         }
 

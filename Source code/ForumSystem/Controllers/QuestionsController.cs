@@ -29,8 +29,7 @@ namespace ForumSystem.Models
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u =>u.QuestionId == id);
-            
+            Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u => u.QuestionId == id);
             if (question == null)
             {
                 return HttpNotFound();

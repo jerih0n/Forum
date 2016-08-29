@@ -5,7 +5,14 @@
     ViewBag.Title = "Detail about";
     Utiles.QustionId = Model.QuestionId;
     ApplicationDbContext db = new ApplicationDbContext();
-    var comments = db.Comments.Where(c => c.QuestionId == Model.QuestionId);
+    var comments = db.Comments.Select(u => new
+    {
+        Text = u.CommentText,
+        Author = u.Author.UserName,
+        Date = u.Date,
+        id = u.QuestionId
+    }).Where(i => i.id == Model.QuestionId);
+
 }
 
 <h2>@Html.DisplayFor(model => model.Title) </h2>
@@ -26,7 +33,7 @@
             @foreach (var comment in comments)
             {
                 <div>
-                    <div>@comment.CommentText</div>
+                    <div>@comment.Text</div>
                     <div>
                         Add By :
                         @if (comment.Author != null)
