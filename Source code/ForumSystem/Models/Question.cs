@@ -11,6 +11,7 @@ namespace ForumSystem.Models
         public Question()
         {
             this.Date = DateTime.Now;
+            this.Comments = new List<Comment>();
            
         }
         [Key]
@@ -33,8 +34,7 @@ namespace ForumSystem.Models
         [Display(Name = "Qustion Author")]
         public ApplicationUser Author { get; set; }
 
-
-
-
+        public IList<Comment> Comments { get; set; }
+       
     }
 }

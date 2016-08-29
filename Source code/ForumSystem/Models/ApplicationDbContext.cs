@@ -22,6 +22,7 @@ namespace ForumSystem.Models
 
         public System.Data.Entity.DbSet<ForumSystem.Models.Question> Questions { get; set; }
 
-        
+        public System.Data.Entity.DbSet<ForumSystem.Models.Comment> Comments { get; set; }
+
     }
 }

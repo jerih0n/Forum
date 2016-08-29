@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<ForumSystem.Models.Question>
     @using ForumSystem.Classes
+    @using ForumSystem.Models
 
 @{
     ViewBag.Title = "All Questions";
+    ApplicationDbContext db = new ApplicationDbContext();
 }
 
 <h2>List of all asked questions</h2>
@@ -22,9 +24,11 @@
             @Html.DisplayNameFor(model => model.Date)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Author.UserName)
+            Author
         </th>
-        <th></th>
+        <th>
+            Comments Count
+        </th>
     </tr>
 
 @foreach (var item in Model) {
@@ -40,6 +44,9 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Author.UserName)
+        </td>
+        <td>
+          @db.Comments.Where(c => c.QuestionId == item.QuestionId).ToList().Count()
         </td>
         <td>
             @Html.ActionLink("See more", "Details", new { id=item.QuestionId }) 

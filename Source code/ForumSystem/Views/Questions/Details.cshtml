@@ -1,40 +1,51 @@
 ﻿@model ForumSystem.Models.Question
-
+    @using ForumSystem.Classes
+    @using ForumSystem.Models
 @{
-    ViewBag.Title = "Detail about" + Html.DisplayFor(model=>model.Title);
+    ViewBag.Title = "Detail about";
+    Utiles.QustionId = Model.QuestionId;
+    ApplicationDbContext db = new ApplicationDbContext();
+    var comments = db.Comments.Where(c => c.QuestionId == Model.QuestionId);
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.Title) </h2>
 
 <div>
-    <h4>Question by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(), "Index", "Manage") need to be solved !!!!</h4>
+    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(), "Index", "Manage") need to be solved !!!!</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+    <dl class="dl-horizontal">       
+       
+        <div>
+            <div>
+                @Html.DisplayFor(modelItem => modelItem.Body)
+            </div>
+            <br />
+            <hr />
+            <br />
+            
+            @foreach (var comment in comments)
+            {
+                <div>
+                    <div>@comment.CommentText</div>
+                    <div>
+                        Add By :
+                        @if (comment.Author != null)
+                        {
+                            @comment.Author
+                        }
+                        else
+                        {
+                            @:anonymous
+                    }
+                    </div>
+                </div>
+                <br />
+                <hr />
+            }
+        </div>
         
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <br />
-        <hr />
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Date)
-        </dd>
-
+            
+        
     </dl>
 </div>
 <p>
@@ -42,6 +53,7 @@
      {
         @Html.ActionLink("Delete", "Delete", new { id = Model.QuestionId }) <span>|</span>
         @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId }) <span>|</span>
-     }         
+     }     
+    @Html.ActionLink("Add Comment","Create","Comments")     
     @Html.ActionLink("Back to List", "Index")
 </p>

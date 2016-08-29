@@ -6,123 +6,115 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
+using ForumSystem.Classes;
 namespace ForumSystem.Models
 {
-    public class QuestionsController : Controller
+    public class CommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Questions
-        public ActionResult Index()
-        {
-            var qustions = db.Questions.Include(u => u.Author);
-            
-            
-            return View(qustions);
-        }
 
-        // GET: Questions/Details/5
+        // GET: Comments/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u =>u.QuestionId == id);
-            
-            if (question == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(comment);
         }
 
-        // GET: Questions/Creat
-        [Authorize]
+        // GET: Comments/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Questions/Create
+        // POST: Comments/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QuestionId,Title,Body,Date,Author")] Question question)
+        public ActionResult Create([Bind(Include = "CommnetId,CommentText,Date,Qustion,Date,QuestionId")] Comment comment)
         {
+            var qustion = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);
+            qustion.Comments.Add(comment);
+            comment.Qustion = qustion;
+            comment.QuestionId = Utiles.QustionId;
             if (ModelState.IsValid)
             {
-                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-                db.Questions.Add(question);
+                if(User.Identity.Name != null)
+                {
+                    comment.Author = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                }
+                                        
+                db.Comments.Add(comment);                
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                //Possible Error
+                return RedirectToAction("Details", "Questions",new { id =Utiles.QustionId });
             }
 
-            return View(question);
+            return View(comment);
         }
 
-        // GET: Questions/Edit/5
-        [Authorize]
+        // GET: Comments/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
-            if (question == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(comment);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Comments/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QuestionId,Title,Body,Date")] Question question)
+        public ActionResult Edit([Bind(Include = "CommnetId,CommentText,Date")] Comment comment)
         {
             if (ModelState.IsValid)
             {
-                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-                db.Entry(question).State = EntityState.Modified;
+                db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(question);
+            return View(comment);
         }
 
-        // GET: Questions/Delete/5
-        [Authorize]
+        // GET: Comments/Delete/5
         public ActionResult Delete(int? id)
         {
-            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
-            if (question == null)
+            Comment comment = db.Comments.Find(id);
+            if (comment == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(comment);
         }
 
-        // POST: Questions/Delete/5
-        [Authorize]
+        // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Question question = db.Questions.Find(id);
-            db.Questions.Remove(question);
+            Comment comment = db.Comments.Find(id);
+            db.Comments.Remove(comment);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

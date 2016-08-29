@@ -7,6 +7,7 @@ namespace ForumSystem.Classes
 {
     public static class Utiles
     {
+        public static int QustionId;
         public static string SplitBody(string input)
         {
             if(input.Length <= 100)
@@ -17,5 +18,6 @@ namespace ForumSystem.Classes
                 return input.Substring(0, 100) + "...";
             }
         }
+       
     }
 }
