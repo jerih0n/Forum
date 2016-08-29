@@ -69,6 +69,7 @@ namespace ForumSystem.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comments.Find(id);
+            //Can harm!
             if (comment == null)
             {
                 return HttpNotFound();
@@ -81,15 +82,17 @@ namespace ForumSystem.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "CommnetId,CommentText,Date")] Comment comment)
+        public ActionResult Edit([Bind(Include = "CommnetId,CommentText,Date,QuestionId")] Comment comment)
         {
+            comment.QuestionId = ForumSystem.Classes.Utiles.QustionId;
             if (ModelState.IsValid)
             {
+                
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                
             }
-            return View(comment);
+            return RedirectToAction("Details", "Questions", new { id = Utiles.QustionId });
         }
 
         // GET: Comments/Delete/5
@@ -115,7 +118,7 @@ namespace ForumSystem.Models
             Comment comment = db.Comments.Find(id);
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Questions", new { id = Utiles.QustionId });
         }
 
         protected override void Dispose(bool disposing)

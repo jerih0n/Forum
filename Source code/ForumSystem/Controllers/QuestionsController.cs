@@ -30,6 +30,8 @@ namespace ForumSystem.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u => u.QuestionId == id);
+            //!!!! DANGER!!!!
+            question.Comments = db.Comments.Where(q => q.QuestionId == id).ToList();
             if (question == null)
             {
                 return HttpNotFound();

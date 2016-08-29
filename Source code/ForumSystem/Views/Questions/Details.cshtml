@@ -4,21 +4,13 @@
 @{
     ViewBag.Title = "Detail about";
     Utiles.QustionId = Model.QuestionId;
-    ApplicationDbContext db = new ApplicationDbContext();
-    var comments = db.Comments.Select(u => new
-    {
-        Text = u.CommentText,
-        Author = u.Author.UserName,
-        Date = u.Date,
-        id = u.QuestionId
-    }).Where(i => i.id == Model.QuestionId);
-
+   
 }
 
 <h2>@Html.DisplayFor(model => model.Title) </h2>
 
 <div>
-    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(), "Index", "Manage") need to be solved !!!!</h4>
+    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(), "Index", "Manage")</h4>
     <hr />
     <dl class="dl-horizontal">       
        
@@ -27,24 +19,36 @@
                 @Html.DisplayFor(modelItem => modelItem.Body)
             </div>
             <br />
+            @if (Model.Author.UserName == User.Identity.Name)
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = Model.QuestionId }) <span>|</span>
+                @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId }) <span>|</span>
+            }
+            <br />
             <hr />
+            
             <br />
             
-            @foreach (var comment in comments)
+            @foreach (var comment in Model.Comments)
             {
                 <div>
-                    <div>@comment.Text</div>
+                    <div>@comment.CommentText</div>
                     <div>
                         Add By :
                         @if (comment.Author != null)
                         {
-                            @comment.Author
+                            @comment.Author.UserName
                         }
                         else
                         {
                             @:anonymous
                     }
                     </div>
+                    @if(comment.Author != null && comment.Author.UserName == User.Identity.Name)
+                    {
+                        @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.CommnetId},null)<span>&nbsp;|&nbsp;</span>
+                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)
+                    }
                 </div>
                 <br />
                 <hr />
@@ -56,11 +60,7 @@
     </dl>
 </div>
 <p>
-     @if (Model.Author.UserName == User.Identity.Name)
-     {
-        @Html.ActionLink("Delete", "Delete", new { id = Model.QuestionId }) <span>|</span>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId }) <span>|</span>
-     }     
-    @Html.ActionLink("Add Comment","Create","Comments")     
+         
+    @Html.ActionLink("Add Comment","Create","Comments")<span>&nbsp;|&nbsp;</span>    
     @Html.ActionLink("Back to List", "Index")
 </p>
