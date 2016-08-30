@@ -1,0 +1,66 @@
+﻿@model ForumSystem.Models.ProfileViewModel
+@{
+    ViewBag.Title = "ProfileIndex";
+}
+<script type="text/javascript">
+    function RevealQuestion() {
+        $("#questions").show().fadeIn(1000)
+    }
+    function RevealCommnets() {
+        $("#comments").show().fadeIn(1000)
+    }
+    function HideQuestions() {
+        $("#questions").hide().fadeOut(1000);
+    }
+    function HideComments() {
+        $("#comments").hide().fadeOut(1000);
+    }
+</script>
+    
+
+<h2>Profile of  @Model.Username</h2>
+<div class="container">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Profile Rating</th>
+                <th>Questions Asked</th>
+                <th>Comments Given</th>
+            </tr>
+        </thead>       
+        <tbody>
+            <tr>
+                <td>@Model.ProfileRating</td>
+                <td>@Model.Questions.Count</td>
+                <td>@Model.Comments.Count</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<a style="text-decoration:none;cursor:pointer;color:blueviolet" onclick="RevealQuestion()"><h4>All Questins by @Model.Username</h4></a>
+<div class="container questions-container" id="questions" style="display:none">
+    <a style="text-decoration:none;cursor:pointer;color:blueviolet" onclick="HideQuestions()"><h4>Hide all questions</h4></a>
+    <hr />
+    @foreach(var question in Model.Questions)
+    {
+        <div>
+            <h3>@Html.ActionLink(question.Title,"Details","Questions",new { id =question.QuestionId },null)</h3>
+            <h6>Rating: @question.Ranking</h6>
+        </div>
+    }
+    <hr />
+</div>
+<a style="text-decoration:none;cursor:pointer;color:blueviolet" onclick="RevealCommnets()"><h4>All Comments by @Model.Username</h4></a>
+<div class="container comments-container" id="comments" style="display:none">
+    <a style="text-decoration:none;cursor:pointer;color:blueviolet" onclick="HideComments()"><h4>Hide all comments</h4></a>
+    <hr />
+    @foreach (var comment in Model.Comments)
+    {
+        <div>
+            <h3>@Html.ActionLink(comment.CommentText, "Details", "Questions", new { id = comment.QuestionId },null)</h3>
+            <h6>Rating: @comment.Rating</h6>
+        </div>
+    }
+    <hr />
+</div>
+

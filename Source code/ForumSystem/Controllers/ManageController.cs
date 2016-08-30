@@ -16,6 +16,26 @@ namespace ForumSystem.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
+        public ActionResult ProfileIndex(string id)
+        {
+            var db = new ApplicationDbContext();
+            var user = db.Users.FirstOrDefault(u => u.Id == id);
+            ProfileViewModel model = new ProfileViewModel();
+            model.Username = user.UserName;
+            model.Questions = db.Questions.Where(q => q.Author.Id == user.Id).ToList();
+            model.Comments = db.Comments.Where(q => q.Author.Id == user.Id).ToList();
+            int sum = 0;
+            foreach(var questinRaing in model.Questions )
+            {
+                sum += questinRaing.Ranking;
+            }
+            foreach(var commnetsRating in model.Comments)
+            {
+                sum += commnetsRating.Rating;
+            }
+            model.ProfileRating = sum;           
+            return View(model);
+        }
         public ManageController()
         {
         }

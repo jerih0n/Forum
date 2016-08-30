@@ -10,7 +10,8 @@
 <h2>@Html.DisplayFor(model => model.Title) </h2>
 
 <div>
-    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(), "Index", "Manage")</h4>
+    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(),
+                     "ProfileIndex", "Manage",new { id = Model.Author.Id },null)</h4>
     <hr />
     <dl class="dl-horizontal">       
        

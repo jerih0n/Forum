@@ -83,4 +83,14 @@ namespace ForumSystem.Models
         public string SelectedProvider { get; set; }
         public ICollection<System.Web.Mvc.SelectListItem> Providers { get; set; }
     }
+    public class ProfileViewModel
+    {
+        [Display(Name = "User")]
+        public string Username { get; set; }
+
+        public int ProfileRating { get; set;}
+        public IList<Question> Questions { get; set; }
+        public IList<Comment> Comments { get; set; }
+    }
+       
 }
