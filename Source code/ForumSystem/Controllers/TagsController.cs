@@ -31,7 +31,8 @@ namespace ForumSystem.Models
                     }
                 }
             }
-            return View(sameTagedQuestions);
+            
+            return View(sameTagedQuestions.OrderByDescending(r=>r.Ranking));
         }
 
 

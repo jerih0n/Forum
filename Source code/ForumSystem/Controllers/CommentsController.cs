@@ -35,10 +35,10 @@ namespace ForumSystem.Models
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var comments = db.Comments.FirstOrDefault(c => c.CommnetId == id);
-            comments.Rating += 1;
+            var comment = db.Comments.FirstOrDefault(c => c.CommnetId == id);
+            comment.Rating += 1;
             db.SaveChanges();
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details","Questions",new { id = comment.QuestionId });
         }
         [Authorize]
         public ActionResult Dislike(int? id)
@@ -47,10 +47,10 @@ namespace ForumSystem.Models
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var comments = db.Comments.FirstOrDefault(c => c.CommnetId == id);
-            comments.Rating -= 1;
+            var comment = db.Comments.FirstOrDefault(c => c.CommnetId == id);
+            comment.Rating -= 1;
             db.SaveChanges();
-            return RedirectToAction("Details/" + id);
+            return RedirectToAction("Details", "Questions", new { id = comment.QuestionId });
 
         }
         // GET: Comments/Create

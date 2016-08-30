@@ -2,19 +2,16 @@
         
 @{
     ViewBag.Title = "Index";
-
-
 }
 
-<h2>Index</h2>
-
-
-<h2>All Questions tagged with </h2>
+<h2>All Questions tagged with  </h2>
 @foreach (var question in Model)
 {
     <div>
         <h2>@Html.ActionLink(question.Title.ToString(), "Details", "Questions", new { id = question.QuestionId },null)</h2>
-        <p>Asked by @Html.ActionLink(question.Author.UserName,"Index","Manage")</p>
+        <p>Asked by @Html.ActionLink(question.Author.UserName, "ProfileIndex", "Manage",new { id = question.Author.Id},null)</p>
+        <p>Ranking: @question.Ranking</p>
     </div>
+    <hr />
 }
 

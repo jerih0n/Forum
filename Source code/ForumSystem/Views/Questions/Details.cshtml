@@ -22,10 +22,13 @@
                 @Html.DisplayFor(modelItem => modelItem.Body)
             </div>
             <hr />
+            @if (Model.Author.UserName != User.Identity.Name)
+            {
+                <span>@Html.ActionLink("Like", "Like", "Questions", new { id = Model.QuestionId }, null)&nbsp; &nbsp;</span>
+                <span>@Html.ActionLink("Dislike", "Dislike", "Questions", new { id = Model.QuestionId }, null)</span>
+                <br />
+            }
             
-            <span>@Html.ActionLink("Like question","Like","Questions",new { id = Model.QuestionId},null)</span>&nbsp;&nbsp;
-            <span>@Html.ActionLink("Dislike Question","Dislike","Questions",new {id = Model.QuestionId},null)</span>
-            <br />
             @if(Model.Tags != null)
             {
                 <br />
@@ -46,23 +49,32 @@
                 @Html.ActionLink("Edit question", "Edit", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
                 @Html.ActionLink("Add Tag", "Create", "Tags")
             }
-            <br />
+            <hr />          
+            <h3>Comments:</h3>
             <hr />
-            
             <br />
-            
             @foreach (var comment in Model.Comments)
             {
                 <div>
                     <div>@comment.CommentText</div>
                     <div>
-                        Add By :
+                        
                         @if (comment.Author != null)
                         {
-                            @comment.Author.UserName
+                            <div>Rating: @comment.Rating</div>
+                            <span>Added by:</span>
+                            @Html.ActionLink(comment.Author.UserName, "ProfileIndex","Manage",new { id = comment.Author.Id},null)
+                            <br />
+                            if (comment.Author.UserName != User.Identity.Name)
+                            {
+                                <br />
+                                <span>@Html.ActionLink("Like", "Like", "Comments", new { id = comment.CommnetId }, null)</span>
+                                <span>@Html.ActionLink("Dislike", "Dislike", "Comments", new { id = comment.CommnetId }, null)</span>
+                            }
+
                         }
                         else
-                        {
+                        { <span>Added By:</span>
                             @:anonymous
                     }
                     </div>
