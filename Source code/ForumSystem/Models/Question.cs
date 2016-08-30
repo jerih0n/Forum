@@ -13,7 +13,7 @@ namespace ForumSystem.Models
             this.Date = DateTime.Now;
             this.Comments = new List<Comment>();
             this.Tags = new List<Tag>();
-           
+            this.Ranking = 0;
         }
         [Key]
         public int QuestionId { get; set; }
@@ -38,6 +38,8 @@ namespace ForumSystem.Models
         public IList<Comment> Comments { get; set; }
 
         public IList<Tag> Tags { get; set; }
+
+        public int Ranking { get; set; }
        
     }
 }

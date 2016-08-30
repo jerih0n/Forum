@@ -3,12 +3,15 @@
     @model List<ForumSystem.Models.Question>
 }
 
-<h1>Most popular discussions</h1>
+<h3>Most popular discussions</h3>
+<hr />
 @foreach(var qustion in Model)
 {
     <div>
         <div>
             <h2>@Html.ActionLink(qustion.Title.ToString(), "Details", "Questions",new { id = qustion.QuestionId},null)</h2>
+            <h5>Ranking: @qustion.Ranking</h5>
+            <hr />
         </div>
     </div>
 }

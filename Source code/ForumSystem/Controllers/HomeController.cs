@@ -12,8 +12,7 @@ namespace ForumSystem.Controllers
         {
             var db = new ApplicationDbContext();
 
-            var questions = db.Questions.Select(u => u).ToList(); //TODO: Ordering by popularity!
-            
+            var questions = db.Questions.OrderByDescending(q => q.Ranking).Take(8).ToList();
             return View(questions);
         }
         

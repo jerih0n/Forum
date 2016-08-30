@@ -22,6 +22,32 @@ namespace ForumSystem.Models
             return View(qustions);
         }
 
+        //Danger!!!!
+        [Authorize]
+        public ActionResult Like(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var question = db.Questions.FirstOrDefault(q => q.QuestionId == id);
+            question.Ranking += 1;
+            db.SaveChanges();
+            return RedirectToAction("Details/"+id);
+        }
+        [Authorize]
+        public ActionResult Dislike(int? id)
+        {
+            if(id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var question = db.Questions.FirstOrDefault(q => q.QuestionId == id);
+            question.Ranking -= 1;
+            db.SaveChanges();
+            return RedirectToAction("Details/" + id);
+
+        }
         // GET: Questions/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,6 +60,7 @@ namespace ForumSystem.Models
             //!!!! DANGER!!!!
             question.Tags = db.Tags.Where(t => t.QuestionId == id).ToList();
             question.Comments = db.Comments.Where(q => q.QuestionId == id).ToList();
+            
             if (question == null)
             {
                 return HttpNotFound();
@@ -54,12 +81,12 @@ namespace ForumSystem.Models
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QuestionId,Title,Body,Date,Author,Tags")] Question question)
+        public ActionResult Create([Bind(Include = "QuestionId,Title,Body,Date,Author,Tags,Ranking")] Question question)
         {
             
             if (ModelState.IsValid)
             {
-                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
+                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);                
                 db.Questions.Add(question);
                 db.SaveChanges();
                 return RedirectToAction("Index");

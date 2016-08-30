@@ -24,6 +24,7 @@ namespace ForumSystem.Models
         [Display(Name ="Commented on")]
         public DateTime Date { get; set; }
 
+        public int Rating { get; set;}
         public Question Qustion { get; set; }
         public int QuestionId { get; set; }
         public ApplicationUser Author { get; set; }

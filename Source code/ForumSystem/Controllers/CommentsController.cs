@@ -28,7 +28,31 @@ namespace ForumSystem.Models
             }
             return View(comment);
         }
+        [Authorize]
+        public ActionResult Like(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var comments = db.Comments.FirstOrDefault(c => c.CommnetId == id);
+            comments.Rating += 1;
+            db.SaveChanges();
+            return RedirectToAction("Details/" + id);
+        }
+        [Authorize]
+        public ActionResult Dislike(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var comments = db.Comments.FirstOrDefault(c => c.CommnetId == id);
+            comments.Rating -= 1;
+            db.SaveChanges();
+            return RedirectToAction("Details/" + id);
 
+        }
         // GET: Comments/Create
         public ActionResult Create()
         {
@@ -43,6 +67,10 @@ namespace ForumSystem.Models
         public ActionResult Create([Bind(Include = "CommnetId,CommentText,Date,Qustion,Date,QuestionId")] Comment comment)
         {
             var qustion = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);
+            if(User.Identity.Name != null)
+            {
+                qustion.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
+            }
             qustion.Comments.Add(comment);
             comment.Qustion = qustion;
             comment.QuestionId = Utiles.QustionId;
