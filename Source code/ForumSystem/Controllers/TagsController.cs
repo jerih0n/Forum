@@ -6,127 +6,112 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
+using ForumSystem.Classes;
 namespace ForumSystem.Models
 {
-    public class QuestionsController : Controller
+    public class TagsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Questions
+        // GET: Tags
         public ActionResult Index()
         {
-            var qustions = db.Questions.Include(u => u.Author);
-            
-            
-            return View(qustions);
+            return View(db.Tags.ToList());
         }
 
-        // GET: Questions/Details/5
+        // GET: Tags/Details/5
         public ActionResult Details(int? id)
         {
-            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u => u.QuestionId == id);
-            //!!!! DANGER!!!!
-            question.Tags = db.Tags.Where(t => t.Question.QuestionId == id).ToList();
-            question.Comments = db.Comments.Where(q => q.QuestionId == id).ToList();
-            if (question == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(tag);
         }
 
-        // GET: Questions/Creat
-        [Authorize]
+        // GET: Tags/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Questions/Create
+        // POST: Tags/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "QuestionId,Title,Body,Date,Author,Tags")] Question question)
+        public ActionResult Create([Bind(Include = "TagId,TagText,QuestionId")] Tag tag)
         {
-            
+            tag.Question = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);      
             if (ModelState.IsValid)
             {
-                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-                db.Questions.Add(question);
+                db.Tags.Add(tag);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                           
+                return RedirectToAction("Details","Questions",new { id = Utiles.QustionId});
             }
 
-            return View(question);
+            return View(tag);
         }
 
-        // GET: Questions/Edit/5
-        [Authorize]
+        // GET: Tags/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
-            if (question == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(tag);
         }
 
-        // POST: Questions/Edit/5
+        // POST: Tags/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "QuestionId,Title,Body,Date")] Question question)
+        public ActionResult Edit([Bind(Include = "TagId,TagText,QuestionId")] Tag tag)
         {
             if (ModelState.IsValid)
             {
-                question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-                db.Entry(question).State = EntityState.Modified;
+                db.Entry(tag).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(question);
+            return View(tag);
         }
 
-        // GET: Questions/Delete/5
-        [Authorize]
+        // GET: Tags/Delete/5
         public ActionResult Delete(int? id)
         {
-            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Question question = db.Questions.Find(id);
-            if (question == null)
+            Tag tag = db.Tags.Find(id);
+            if (tag == null)
             {
                 return HttpNotFound();
             }
-            return View(question);
+            return View(tag);
         }
 
-        // POST: Questions/Delete/5
-        [Authorize]
+        // POST: Tags/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Question question = db.Questions.Find(id);
-            db.Questions.Remove(question);
+            Tag tag = db.Tags.Find(id);
+            db.Tags.Remove(tag);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -1,0 +1,34 @@
+﻿@model ForumSystem.Models.Tag
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Tag</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.TagText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TagText)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.QuestionId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.QuestionId)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.TagId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

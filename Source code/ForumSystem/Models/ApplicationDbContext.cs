@@ -24,5 +24,6 @@ namespace ForumSystem.Models
 
         public System.Data.Entity.DbSet<ForumSystem.Models.Comment> Comments { get; set; }
 
+        public System.Data.Entity.DbSet<ForumSystem.Models.Tag> Tags { get; set; }
     }
 }

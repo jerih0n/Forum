@@ -8,6 +8,7 @@ namespace ForumSystem.Classes
     public static class Utiles
     {
         public static int QustionId;
+        public static int TagId;
         public static string SplitBody(string input)
         {
             if(input.Length <= 100)

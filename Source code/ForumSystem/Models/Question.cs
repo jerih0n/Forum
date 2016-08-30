@@ -12,7 +12,7 @@ namespace ForumSystem.Models
         {
             this.Date = DateTime.Now;
             this.Comments = new List<Comment>();
-            
+            this.Tags = new List<Tag>();
            
         }
         [Key]
@@ -36,6 +36,8 @@ namespace ForumSystem.Models
         public ApplicationUser Author { get; set; }
         
         public IList<Comment> Comments { get; set; }
+
+        public IList<Tag> Tags { get; set; }
        
     }
 }

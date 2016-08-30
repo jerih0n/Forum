@@ -19,10 +19,21 @@
                 @Html.DisplayFor(modelItem => modelItem.Body)
             </div>
             <br />
-            @if (Model.Author.UserName == User.Identity.Name)
+            @if(Model.Tags != null)
             {
-                @Html.ActionLink("Delete", "Delete", new { id = Model.QuestionId }) <span>|</span>
-                @Html.ActionLink("Edit", "Edit", new { id = Model.QuestionId }) <span>|</span>
+                <span>Tags:</span>
+                foreach(var tag in Model.Tags)
+                {
+                    <span>#@tag.TagText;&nbsp</span>
+                }
+                <br />
+            }
+            @if (Model.Author.UserName == User.Identity.Name)
+            {   
+                <br />
+                @Html.ActionLink("Delete post", "Delete", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
+                @Html.ActionLink("Edit post", "Edit", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
+                @Html.ActionLink("Add Tag", "Create", "Tags")
             }
             <br />
             <hr />
@@ -46,8 +57,8 @@
                     </div>
                     @if(comment.Author != null && comment.Author.UserName == User.Identity.Name)
                     {
-                        @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.CommnetId},null)<span>&nbsp;|&nbsp;</span>
-                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)
+                        @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.CommnetId},null)<span>&nbsp;&nbsp;;</span>
+                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)                       
                     }
                 </div>
                 <br />
