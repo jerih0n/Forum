@@ -24,15 +24,18 @@
                 <span>Tags:</span>
                 foreach(var tag in Model.Tags)
                 {
-                    <span>#@tag.TagText;&nbsp</span>
+                    <span>@Html.ActionLink(("#" + tag.TagText), "Index", "Tags",new { id = tag.TagId },null)
+                        &nbsp;&nbsp;
+                    </span>
+                    
                 }
                 <br />
             }
             @if (Model.Author.UserName == User.Identity.Name)
             {   
                 <br />
-                @Html.ActionLink("Delete post", "Delete", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
-                @Html.ActionLink("Edit post", "Edit", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
+                @Html.ActionLink("Delete question", "Delete", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
+                @Html.ActionLink("Edit question", "Edit", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
                 @Html.ActionLink("Add Tag", "Create", "Tags")
             }
             <br />

@@ -32,7 +32,7 @@ namespace ForumSystem.Models
             }
             Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u => u.QuestionId == id);
             //!!!! DANGER!!!!
-            question.Tags = db.Tags.Where(t => t.Question.QuestionId == id).ToList();
+            question.Tags = db.Tags.Where(t => t.QuestionId == id).ToList();
             question.Comments = db.Comments.Where(q => q.QuestionId == id).ToList();
             if (question == null)
             {

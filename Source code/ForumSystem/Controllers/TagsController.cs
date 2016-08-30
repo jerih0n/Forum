@@ -14,10 +14,26 @@ namespace ForumSystem.Models
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tags
-        public ActionResult Index()
+        public ActionResult Index(int id )
         {
-            return View(db.Tags.ToList());
+            //PERFORMANCE PROBLEM ?
+            List<Question> sameTagedQuestions = new List<Question>();
+            
+            Tag tag = db.Tags.FirstOrDefault(t => t.TagId == id);
+            List<Question> questions = db.Questions.Include(t => t.Tags).Include(u => u.Author).ToList();
+            foreach (var question in questions) 
+            {
+                foreach(var questionTag in question.Tags)
+                {
+                    if (questionTag.TagText.ToLower() == tag.TagText.ToLower())
+                    {
+                        sameTagedQuestions.Add(question);
+                    }
+                }
+            }
+            return View(sameTagedQuestions);
         }
+
 
         // GET: Tags/Details/5
         public ActionResult Details(int? id)
@@ -47,7 +63,10 @@ namespace ForumSystem.Models
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "TagId,TagText,QuestionId")] Tag tag)
         {
-            tag.Question = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);      
+            var question = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);
+            tag.Questions.Add(db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId));
+            tag.QuestionId = Utiles.QustionId;
+            question.Tags.Add(tag);    
             if (ModelState.IsValid)
             {
                 db.Tags.Add(tag);
