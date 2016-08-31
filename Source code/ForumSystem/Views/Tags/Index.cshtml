@@ -9,7 +9,7 @@
 @foreach (var question in Model)
 {
     <div>
-        <h2>@Html.ActionLink(question.Title.ToString(), "Details", "Questions", new { id = question.QuestionId },null)</h2>
+        <h3>@Html.ActionLink(question.Title.ToString(), "Details", "Questions", new { id = question.QuestionId },null)</h3>
         <p class="page-text">Asked by @Html.ActionLink(question.Author.UserName, "ProfileIndex", "Manage",new { id = question.Author.Id},null)</p>
         <p class="page-text">Ranking: @question.Ranking</p>
     </div>

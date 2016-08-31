@@ -70,6 +70,7 @@ namespace ForumSystem.Models
 
         // GET: Questions/Creat
         [Authorize]
+        
         public ActionResult Create()
         {
             return View();

@@ -63,6 +63,7 @@
                             <div class="comment-rating">Rating: @comment.Rating</div>
                             <span style="font-style:italic;">Added by:</span>
                             @Html.ActionLink(comment.Author.UserName, "ProfileIndex","Manage",new { id = comment.Author.Id},null)
+                            <div class="comment-rating">Added on @comment.Date</div>
                             <br />
                             if (comment.Author.UserName != User.Identity.Name )
                             {
