@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
@@ -20,7 +20,15 @@ namespace ForumSystem.Controllers
         {
             var db = new ApplicationDbContext();
             var user = db.Users.FirstOrDefault(u => u.Id == id);
+            
             ProfileViewModel model = new ProfileViewModel();
+            if (user.Roles.Count == 0)
+            {
+                model.Role = "Visitor";
+            }else
+            {
+                model.Role = "Administrator";
+            }
             model.Username = user.UserName;
             model.Questions = db.Questions.Where(q => q.Author.Id == user.Id).ToList();
             model.Comments = db.Comments.Where(q => q.Author.Id == user.Id).ToList();
@@ -33,7 +41,7 @@ namespace ForumSystem.Controllers
             {
                 sum += commnetsRating.Rating;
             }
-            model.ProfileRating = sum;           
+            model.ProfileRating = sum;                      
             return View(model);
         }
         public ManageController()
@@ -86,7 +94,7 @@ namespace ForumSystem.Controllers
             var userId = User.Identity.GetUserId();
             var model = new IndexViewModel
             {
-                
+                ProfileId = userId,
                 HasPassword = HasPassword(),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),

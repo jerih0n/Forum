@@ -1,6 +1,9 @@
 ﻿body {
     padding-top: 50px;
-    padding-bottom: 20px;
+    padding-bottom: 20px;  
+    background-color:black;
+    color:white; 
+    
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +24,78 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+.index-title{
+    background-color:#222222;
+    margin:30px;
+    border-radius:8px;
+    width:50%;
+}
+.index-title > hr {
+    border-color:black;
+    border:solid black 3px ;
+}
+.index-title > h2 {
+    padding-left:10px;
+}
+.index-title > h5{
+    margin-left:10px;
+    color:#707070;
+
+}
+.title-container {
+    color:#707070;
+}
+table {
+    border-collapse:collapse;
+}
+.all-questions-table {
+    background-color:#222222;
+    border-radius:10px;
+    border:solid black 3px;
+    color:#909090;
+    
+}
+.comment {
+    background-color:#222222;
+    border-radius:10px;
+}
+.comment > div > hr {
+    border:solid black 3px;
+    margin-left:-10px;
+}
+.comment > .comment-text {
+    width:60%;
+    margin-left:10px;
+    border-radius:10px;
+    padding-top:10px;
+}
+.comment-author-rating {
+    margin-left:10px;
+}
+.rating-control {
+    margin-bottom:10px;
+    margin:3px;
+}
+.form-control {
+    background-color:#242424;
+    color:#707070;
+}
+.control-label {
+    color:#707070;
+}
+.btn-default {
+    background-color:black;
+    border-color:#707070;
+    color:#707070;
+}
+.form-control {
+    background-color:#242424;
+    color:#707070;
+}
+.page-text {
+    color:#707070;
+}
+.page-line {
+    border-color:#707070;
 }

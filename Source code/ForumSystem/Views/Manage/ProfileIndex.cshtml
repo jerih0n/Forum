@@ -18,21 +18,28 @@
 </script>
     
 
-<h2>Profile of  @Model.Username</h2>
+<h2 class="page-text">Profile of  @Model.Username</h2>
+@if(Model.Role == "Visitor")
+{
+    <h4 class="page-text">Profile permissions - Restricted <i>[ Visitor ]</i></h4>
+}else
+{
+    <h4 class="page-text">Profile permissions - Full Access <i>[ Administrator ]</i></h4>
+}
 <div class="container">
     <table class="table">
         <thead>
             <tr>
-                <th>Profile Rating</th>
-                <th>Questions Asked</th>
-                <th>Comments Given</th>
+                <th class="page-text">Profile Rating</th>
+                <th class="page-text">Questions Asked</th>
+                <th class="page-text">Comments Given</th>
             </tr>
         </thead>       
         <tbody>
             <tr>
-                <td>@Model.ProfileRating</td>
-                <td>@Model.Questions.Count</td>
-                <td>@Model.Comments.Count</td>
+                <td class="page-text">@Model.ProfileRating</td>
+                <td class="page-text">@Model.Questions.Count</td>
+                <td class="page-text">@Model.Comments.Count</td>
             </tr>
         </tbody>
     </table>
@@ -45,7 +52,7 @@
     {
         <div>
             <h3>@Html.ActionLink(question.Title,"Details","Questions",new { id =question.QuestionId },null)</h3>
-            <h6>Rating: @question.Ranking</h6>
+            <h6 class="page-text">Rating: @question.Ranking</h6>
         </div>
     }
     <hr />
@@ -58,7 +65,7 @@
     {
         <div>
             <h3>@Html.ActionLink(comment.CommentText, "Details", "Questions", new { id = comment.QuestionId },null)</h3>
-            <h6>Rating: @comment.Rating</h6>
+            <h6 class="page-text">Rating: @comment.Rating</h6>
         </div>
     }
     <hr />

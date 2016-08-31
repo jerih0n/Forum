@@ -12,6 +12,10 @@ namespace ForumSystem.Models
         public string PhoneNumber { get; set; }
         public bool TwoFactor { get; set; }
         public bool BrowserRemembered { get; set; }
+        // Danger!
+        public string ProfileId { get; set;}
+
+       
     }
 
     public class ManageLoginsViewModel
@@ -91,6 +95,7 @@ namespace ForumSystem.Models
         public int ProfileRating { get; set;}
         public IList<Question> Questions { get; set; }
         public IList<Comment> Comments { get; set; }
+        public string Role { get; set; }
     }
        
 }

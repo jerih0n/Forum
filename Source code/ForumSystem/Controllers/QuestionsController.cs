@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-
+using ForumSystem.Classes;
 namespace ForumSystem.Models
 {
     public class QuestionsController : Controller
@@ -19,7 +19,7 @@ namespace ForumSystem.Models
             var qustions = db.Questions.Include(u => u.Author);
             
             
-            return View(qustions);
+            return View(qustions.OrderByDescending(d=>d.Date).ToList());
         }
 
         //Danger!!!!
@@ -104,6 +104,7 @@ namespace ForumSystem.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Question question = db.Questions.Find(id);
+            Utiles.QuesionRating = question.Ranking;
             if (question == null)
             {
                 return HttpNotFound();
@@ -119,10 +120,12 @@ namespace ForumSystem.Models
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "QuestionId,Title,Body,Date")] Question question)
         {
+            
             if (ModelState.IsValid)
             {
                 question.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
                 db.Entry(question).State = EntityState.Modified;
+                question.Ranking = Utiles.QuesionRating;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

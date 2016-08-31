@@ -9,6 +9,9 @@ namespace ForumSystem.Classes
     {
         public static int QustionId;
         public static int TagId;
+        public static int QuesionRating;
+        public static int CommnetRating;
+        public static string Tag;
         public static string SplitBody(string input)
         {
             if(input.Length <= 100)

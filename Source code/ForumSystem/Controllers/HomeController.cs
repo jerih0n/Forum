@@ -12,7 +12,7 @@ namespace ForumSystem.Controllers
         {
             var db = new ApplicationDbContext();
 
-            var questions = db.Questions.OrderByDescending(q => q.Ranking).Take(8).ToList();
+            var questions = db.Questions.OrderByDescending(q => q.Ranking).Take(5).ToList();
             return View(questions);
         }
         

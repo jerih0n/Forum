@@ -10,19 +10,19 @@
 <h2>@Html.DisplayFor(model => model.Title) </h2>
 
 <div>
-    <h4>Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(),
+    <h4 style="font-style:italic;">Questioned by @Html.ActionLink(Html.DisplayFor(model => model.Author.UserName).ToString(),
                      "ProfileIndex", "Manage",new { id = Model.Author.Id },null)</h4>
     <hr />
     <dl class="dl-horizontal">       
        
-        <div class="question">
+        <div style="width:50%;">
             <div>Rating:@Model.Ranking</div>
             <br />
             <div>
                 @Html.DisplayFor(modelItem => modelItem.Body)
             </div>
             <hr />
-            @if (Model.Author.UserName != User.Identity.Name)
+            @if (Model.Author.UserName != User.Identity.Name || User.IsInRole("Administrator") )
             {
                 <span>@Html.ActionLink("Like", "Like", "Questions", new { id = Model.QuestionId }, null)&nbsp; &nbsp;</span>
                 <span>@Html.ActionLink("Dislike", "Dislike", "Questions", new { id = Model.QuestionId }, null)</span>
@@ -42,7 +42,7 @@
                 }
                 <br />
             }
-            @if (Model.Author.UserName == User.Identity.Name)
+            @if (Model.Author.UserName == User.Identity.Name || User.IsInRole("Administrator"))
             {   
                 <br />
                 @Html.ActionLink("Delete question", "Delete", new { id = Model.QuestionId }) <span>&nbsp;&nbsp;</span>
@@ -52,37 +52,42 @@
             <hr />          
             <h3>Comments:</h3>
             <hr />
-            <br />
             @foreach (var comment in Model.Comments)
             {
-                <div>
-                    <div>@comment.CommentText</div>
-                    <div>
-                        
+                <div class="comment">
+                    <div class="comment-text">@comment.CommentText</div>
+                    <div class="comment-author-rating">
+                        <hr />
                         @if (comment.Author != null)
                         {
-                            <div>Rating: @comment.Rating</div>
-                            <span>Added by:</span>
+                            <div class="comment-rating">Rating: @comment.Rating</div>
+                            <span style="font-style:italic;">Added by:</span>
                             @Html.ActionLink(comment.Author.UserName, "ProfileIndex","Manage",new { id = comment.Author.Id},null)
                             <br />
-                            if (comment.Author.UserName != User.Identity.Name)
+                            if (comment.Author.UserName != User.Identity.Name )
                             {
                                 <br />
-                                <span>@Html.ActionLink("Like", "Like", "Comments", new { id = comment.CommnetId }, null)</span>
-                                <span>@Html.ActionLink("Dislike", "Dislike", "Comments", new { id = comment.CommnetId }, null)</span>
+                                <span class="rating-control">@Html.ActionLink("Like", "Like", "Comments", new { id = comment.CommnetId }, null)</span>
+                                <span class="rating-control">@Html.ActionLink("Dislike", "Dislike", "Comments", new { id = comment.CommnetId }, null)</span>
                             }
 
                         }
                         else
-                        { <span>Added By:</span>
-                            @:anonymous
-                    }
+                        { <span style="font-style:italic;">Added By:</span>
+                            @:anonymous                         
+                        }
                     </div>
                     @if(comment.Author != null && comment.Author.UserName == User.Identity.Name)
                     {
                         @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.CommnetId},null)<span>&nbsp;&nbsp;</span>
-                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)                       
+                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)
                     }
+                    else if (User.IsInRole("Administrator"))
+                    {
+                        @Html.ActionLink("Delete Comment", "Delete", "Comments", new { id = comment.CommnetId }, null)<span>&nbsp;&nbsp;</span>
+                        @Html.ActionLink("Edit Comment", "Edit", "Comments", new { id = comment.CommnetId }, null)
+                    }
+
                 </div>
                 <br />
                 <hr />

@@ -97,6 +97,7 @@ namespace ForumSystem.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Comment comment = db.Comments.Find(id);
+            Classes.Utiles.CommnetRating = comment.Rating;
             //Can harm!
             if (comment == null)
             {
@@ -115,7 +116,7 @@ namespace ForumSystem.Models
             comment.QuestionId = ForumSystem.Classes.Utiles.QustionId;
             if (ModelState.IsValid)
             {
-                
+                comment.Rating = Utiles.CommnetRating;
                 db.Entry(comment).State = EntityState.Modified;
                 db.SaveChanges();
                 

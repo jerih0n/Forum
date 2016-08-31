@@ -20,6 +20,7 @@ namespace ForumSystem.Models
             List<Question> sameTagedQuestions = new List<Question>();
             
             Tag tag = db.Tags.FirstOrDefault(t => t.TagId == id);
+            Utiles.Tag = tag.TagText.ToString();
             List<Question> questions = db.Questions.Include(t => t.Tags).Include(u => u.Author).ToList();
             foreach (var question in questions) 
             {
@@ -32,7 +33,7 @@ namespace ForumSystem.Models
                 }
             }
             
-            return View(sameTagedQuestions.OrderByDescending(r=>r.Ranking));
+            return View(sameTagedQuestions.OrderByDescending(r=>r.Ranking).ToList());
         }
 
 
