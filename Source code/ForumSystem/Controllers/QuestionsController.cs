@@ -57,9 +57,8 @@ namespace ForumSystem.Models
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Question question = db.Questions.Include(u => u.Author).FirstOrDefault(u => u.QuestionId == id);
-            //!!!! DANGER!!!!
             question.Tags = db.Tags.Where(t => t.QuestionId == id).ToList();
-            question.Comments = db.Comments.Where(q => q.QuestionId == id).ToList();
+            question.Comments = db.Comments.Where(q => q.QuestionId == id).Include(q => q.Author).ToList();
             
             if (question == null)
             {
@@ -128,7 +127,7 @@ namespace ForumSystem.Models
                 db.Entry(question).State = EntityState.Modified;
                 question.Ranking = Utiles.QuesionRating;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details/"+question.QuestionId);
             }
             return View(question);
         }

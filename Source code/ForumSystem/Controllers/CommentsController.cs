@@ -66,12 +66,7 @@ namespace ForumSystem.Models
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "CommnetId,CommentText,Date,Qustion,Date,QuestionId")] Comment comment)
         {
-            var qustion = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);
-            if(User.Identity.Name != null)
-            {
-                qustion.Author = db.Users.FirstOrDefault(a => a.UserName == User.Identity.Name);
-            }
-            qustion.Comments.Add(comment);
+            var qustion = db.Questions.FirstOrDefault(q => q.QuestionId == Utiles.QustionId);            
             comment.Qustion = qustion;
             comment.QuestionId = Utiles.QustionId;
             if (ModelState.IsValid)
@@ -80,7 +75,7 @@ namespace ForumSystem.Models
                 {
                     comment.Author = db.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
                 }
-                                        
+                qustion.Comments.Add(comment);
                 db.Comments.Add(comment);                
                 db.SaveChanges();
                 //Possible Error
